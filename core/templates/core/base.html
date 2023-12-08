@@ -37,7 +37,9 @@
                         <div class="card-header">Search</div>
                         <div class="card-body">
                             <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                                <form action="{% url 'search' %}" method="GET">
+                                <input name="q" class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                                </form>
                                 <button class="btn btn-primary" id="button-search" type="button">Go!</button>
                             </div>
                         </div>
@@ -50,7 +52,7 @@
                                 <div class="col-sm-6">
                                     {% for category in category_list %}
                                     <ul class="list-unstyled mb-0">
-                                        <li><a href="#!">{{ category.category_name }}</a></li>
+                                        <li><a href="{% url 'category-browse' category.id%}">{{ category.category_name }}</a></li>
                                     </ul>
                                     {% endfor %}
                                 </div>

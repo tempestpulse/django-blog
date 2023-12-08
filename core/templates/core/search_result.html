@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Page header with logo and tagline-->
+    <header class="py-5 bg-light border-bottom mb-4">
+        <div class="container">
+            <div class="text-center my-5">
+                <h1 class="fw-bolder">Welcome to Blog Home!</h1>
+                <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
+            </div>
+        </div>
+    </header>
+    <!-- Page content-->
+    <div class="container">
+        <div class="row">
+            <!-- Blog entries-->
+
+            <div class="col-lg-8">
+
+                <!-- Nested row for non-featured blog posts-->
+                <div class="row">
+                    <div class="col-lg-6">
+                            <!-- Blog post-->
+
+                        {% for post in post_list %}
+                            <div class="card mb-4">
+                                <a href="">
+                                </a>
+                                <div class="card-body">
+                                    <div class="small text-muted"></div>
+                                    <h2 class="card-title h4"><a href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
+                                </div>
+                            </div>
+                        {% endfor %}
+                                </div>
+                                <div class="col-lg-6">
+                        </div>
+                </div>
+                <!-- Pagination-->
+
+            </div>
+{% endblock %}
