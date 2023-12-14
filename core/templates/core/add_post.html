@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Page header with logo and tagline-->
+    <header class="py-5 bg-light border-bottom mb-4">
+    </header>
+    <!-- Page content-->
+    <div class="container">
+        <div class="row">
+            <!-- Blog entries-->
+
+            <div class="col-lg-8">
+
+                <!-- Nested row for non-featured blog posts-->
+                <div class="row">
+                    <div class="col-lg-6">
+                            <!-- Blog post-->
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ form.media }}
+                            {{ form.as_p }}
+                        <input type="submit"/>
+                         </form>
+
+                        </div>
+                </div>
+                <!-- Pagination-->
+
+            </div>
+{% endblock %}
