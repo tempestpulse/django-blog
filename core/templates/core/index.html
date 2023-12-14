@@ -4,12 +4,6 @@
 {% block content %}
     <!-- Page header with logo and tagline-->
     <header class="py-5 bg-light border-bottom mb-4">
-        <div class="container">
-            <div class="text-center my-5">
-                <h1 class="fw-bolder">Welcome to Blog Home!</h1>
-                <p class="lead mb-0">A Bootstrap 5 starter layout for your next blog homepage</p>
-            </div>
-        </div>
     </header>
     <!-- Page content-->
     <div class="container">
@@ -38,7 +32,7 @@
                                     <div class="small text-muted"></div>
                                     <h2 class="card-title h4">{{ post.title }}</h2>
                                     <p class="card-text">{{ post.overview }}</p>
-                                    <a class="btn btn-primary" href="#!">Read more →</a>
+                                    <a class="btn btn-primary" href="{% url 'post-detail' post.id %}">Read more →</a>
                                 </div>
                             </div>
                         {% endfor %}

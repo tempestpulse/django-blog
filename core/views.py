@@ -1,11 +1,13 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic.detail import DetailView
-from .models import Post, Category
+from .forms import PostForm
+from .models import Post, Category, Comment
 
 
 def home(request):
-    post_list = Post.objects.all()
+    post_list = Post.objects.order_by('timestamp')
     category_list = Category.objects.all()
     paginator = Paginator(post_list, 1)
     page_number = request.GET.get('page')
@@ -38,7 +40,7 @@ def search(request):
         context = {
             'category_list': category_list,
             'search_input': search_input,
-            'post_list': post_list,
+            'post_list': post_list
         }
         return render(request, 'core/search_result.html', context)
 
@@ -55,3 +57,21 @@ def category_browse(request, category_id):
 
     return render(request, 'core/category_result.html', context)
 
+
+@login_required
+def add_post(request):
+    category_list = Category.objects.all()
+    form = PostForm()
+    if request.method == "POST":
+        form = PostForm(request.POST)
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.author = request.user
+            new_post.save()
+            return redirect('post-detail', pk=new_post.id)
+    context = {
+        'category_list': category_list,
+        'form': form
+    }
+
+    return render(request, 'core/add_post.html', context)
