@@ -1,5 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
     <!-- Page content-->
@@ -13,7 +14,7 @@
                         <!-- Post title-->
                         <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
                         <!-- Post meta content-->
-                        <div class="text-muted fst-italic mb-2">{{ post.timestamp }} | {{ post.timestamp|timesince }} ago</div>
+                        <div class="text-muted fst-italic mb-2">{{ post.timestamp }} | {{ post.timestamp|timesince }} ago | {{ post.view_count }} views</div>
                         <!-- Post categories-->
                         {% for category in post.category.all %}
                         <a class="badge bg-secondary text-decoration-none link-light" href="#!">{{ category }}</a>
@@ -39,10 +40,16 @@
                 <section class="mb-5">
                     <div class="card bg-light">
                         <div class="card-body">
+                            <p>{{ post.comment_count }} comments</p>
                             <!-- Comment form-->
-                            <form class="mb-4"><textarea class="form-control" rows="3"
-                                                         placeholder="Join the discussion and leave a comment!"></textarea>
-                            </form>
+                            {% if user.is_authenticated %}
+                                <form method="post" class="mb-4">
+                                    {% csrf_token %}
+                                    {{ form|crispy }}
+
+                                 <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            {% endif %}
                             <!-- Comment with nested comments-->
                             {% for comment in post.comments.all %}
                             <div class="d-flex mb-4">
@@ -53,11 +60,12 @@
                                 <div class="ms-3">
                                     <div class="fw-bold">{{ comment.author }}</div>
                                         {{ comment.content }}
-                            {% endfor %}
+
 
                                 </div>
-                            </div>
 
+                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </section>
