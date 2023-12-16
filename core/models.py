@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from django.db import models
 from ckeditor.fields import RichTextField
-
 
 User = get_user_model()
 
@@ -22,7 +22,10 @@ class Post(models.Model):
     thumbnail = models.ImageField(upload_to='media/thumbnails', null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     view_count = models.IntegerField(default=0)
-    comment_count = models.IntegerField(default=0)
+
+    @property
+    def comment_count(self):
+        return self.comments.count()
 
     def __str__(self):
         return self.title
@@ -36,5 +39,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return '{} -- {}'.format(self.author, self.post)
-
-
