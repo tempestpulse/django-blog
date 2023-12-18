@@ -18,7 +18,7 @@ class Post(models.Model):
     title = models.CharField(max_length=30)
     overview = models.CharField(max_length=60, null=True, blank=True)
     content = RichTextField(blank=True, null=True)
-    category = models.ManyToManyField(Category)
+    category = models.ManyToManyField(Category, blank=True)
     thumbnail = models.ImageField(upload_to='media/thumbnails', null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     view_count = models.IntegerField(default=0)
