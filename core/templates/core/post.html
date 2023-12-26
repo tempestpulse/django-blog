@@ -13,25 +13,31 @@
                     <header class="mb-4">
                         <!-- Post title-->
                         <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+                        {% if request.user == post.author %}
+                            <p><a href="{% url 'post-update' post.id %}">Update</a> | <a
+                                    href="{% url 'post-delete' post.id %}">Delete</a></p>
+                        {% endif %}
                         <!-- Post meta content-->
-                        <div class="text-muted fst-italic mb-2">{{ post.timestamp }} | {{ post.timestamp|timesince }} ago | {{ post.view_count }} views</div>
+                        <div class="text-muted fst-italic mb-2">{{ post.timestamp }} | {{ post.timestamp|timesince }}
+                            ago | {{ post.view_count }} views
+                        </div>
                         <!-- Post categories-->
                         {% for category in post.category.all %}
-                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">{{ category }}</a>
+                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">{{ category }}</a>
                         {% endfor %}
                     </header>
                     <!-- Preview image figure-->
-                {% if post.thumbnail %}
-                    <figure class="mb-4"><img class="img-fluid rounded"
-                                              src="{{ post.thumbnail.url }}" alt="">
-                {% else %}
-                     <figure class="mb-4"><img class="img-fluid rounded"
-                                              src="{% static 'assets/img/default.jpg' %}" alt="">
-                 {% endif %}
+                    {% if post.thumbnail %}
+                        <figure class="mb-4"><img class="img-fluid rounded"
+                                                  src="{{ post.thumbnail.url }}" alt="">
+                    {% else %}
+                        <figure class="mb-4"><img class="img-fluid rounded"
+                                                  src="{% static 'assets/img/default.jpg' %}" alt="">
+                    {% endif %}
                     </figure>
                     <!-- Post content-->
                     <section class="mb-5">
-                        {{ post.content|safe}}
+                        {{ post.content|safe }}
                     </section>
                 </article>
 
@@ -47,24 +53,28 @@
                                     {% csrf_token %}
                                     {{ form|crispy }}
 
-                                 <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
                             {% endif %}
                             <!-- Comment with nested comments-->
                             {% for comment in post.comments.all %}
-                            <div class="d-flex mb-4">
-                                <!-- Parent comment-->
-                                <div class="flex-shrink-0"><img class="rounded-circle"
-                                                                src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
-                                                                alt="..."/></div>
-                                <div class="ms-3">
-                                    <div class="fw-bold">{{ comment.author }}</div>
+                                <div class="d-flex mb-4">
+                                    <!-- Parent comment-->
+                                    <div class="flex-shrink-0"><img class="rounded-circle"
+                                                                    src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
+                                                                    alt="..."/></div>
+                                    <div class="ms-3">
+                                        <div class="fw-bold">{{ comment.author }}
+                                            {% if request.user == comment.author %}
+                                                | <a href="{% url 'comment-delete' comment.id  %}">Delete</a>
+                                            {% endif %}
+                                        </div>
                                         {{ comment.content }}
 
 
-                                </div>
+                                    </div>
 
-                            </div>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>
